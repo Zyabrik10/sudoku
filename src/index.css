@@ -120,3 +120,52 @@ canvas {
   margin: 0 auto;
   margin-top: 10px;
 }
+
+.modal-end{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: rgba(0, 0, 0, 0.7);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-end.active{
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-end .content{
+  border-radius: 10px;
+  padding: 40px 10px;
+
+  background-color: #eee;
+
+  width: 100%;
+  max-width: 600px;
+}
+
+.modal-end .content p{
+  text-align: center;
+  font-size: 40px;
+  margin-bottom: 50px;
+}
+
+.modal-end .content button{
+  display: block;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgb(12, 255, 174);
+  border-radius: 5px;
+  text-transform: uppercase;
+}

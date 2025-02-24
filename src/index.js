@@ -1,10 +1,12 @@
 import { floor, min } from "./js/math";
 import Sudoku from "./js/Sudoku";
 
+
 let canvas,
   ctx,
   sudoku,
   modal,
+  modalEnd,
   modalStat,
   cell = {
     x: undefined,
@@ -20,17 +22,13 @@ let canvas,
 
 window.addEventListener("load", () => {
   modal = document.querySelector(".modal");
+  modalEnd = document.querySelector(".modal-end");
+  let modalEndButton = modalEnd.querySelector("button");
   modalStat = modal.getBoundingClientRect();
   canvas = document.querySelector("canvas");
   ctx = canvas.getContext("2d");
 
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-
-  sudoku = new Sudoku(3, 3);
-
-  setSizes();
-  drawBoard();
+  init();
 
   canvas.addEventListener("mousedown", ({ offsetX: _x, offsetY: _y }) => {
     modal.classList.remove("active");
@@ -90,6 +88,16 @@ window.addEventListener("load", () => {
     sudoku.set(cell.x, cell.y, cell.x1, cell.y1, +target.dataset.value);
     drawBoard();
     modal.classList.remove("active");
+    let isWinner = checkWinner();
+
+    if (isWinner) {
+      modalEnd.classList.add("active");
+    }
+  });
+
+  modalEndButton.addEventListener("click", () => {
+    init();
+    modalEnd.classList.remove("active");
   });
 });
 
@@ -216,6 +224,28 @@ function setSizes() {
 
   startX = canvas.width / 2 - smallCellWidth - smallCellWidth / 2;
   startY = canvas.height / 2 - smallCellHeight - smallCellHeight / 2;
+}
+
+function init() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  sudoku = new Sudoku(3, 3);
+
+  setSizes();
+  drawBoard();
+}
+
+function checkWinner() {
+  for (let i = 0; i < sudoku.board.length; i++) {
+    for (let j = 0; j < sudoku.board[i].length; j++) {
+      for (let k = 0; k < sudoku.board[i][j].length; k++) {
+        if (sudoku.board[i][j][k] === "empty") return false;
+      }
+    }
+  }
+
+  return true;
 }
 
 window.addEventListener("resize", () => {
